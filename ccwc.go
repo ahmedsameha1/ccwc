@@ -8,5 +8,5 @@ import (
 )
 
 func main() {
-	fmt.Print(app.App(os.ReadFile, os.Args[2])," ", os.Args[2])
+	fmt.Print(app.App(os.ReadFile, os.Args))
 }

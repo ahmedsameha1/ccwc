@@ -12,6 +12,30 @@ func TestApp(t *testing.T) {
 			panic("error")
 		}
 		return []byte{4, 127, 128, 129, 255}, nil
-	}, "test.txt")
-	assert.Equal(t, 5, result)
+	}, []string{"ccwc", "-c", "test.txt"})
+	assert.Equal(t, "5 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte{4, 127, 128, 129, 255}, nil
+	}, []string{"ccwc", "-l", "test.txt"})
+	assert.Equal(t, "1 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte{4, 127, 128, 129, 255, 10, 66, 67, 68, 10}, nil
+	}, []string{"ccwc", "-l", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte{4, 127, 128, 129, 255, 10, 66, 67, 68}, nil
+	}, []string{"ccwc", "-l", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
 }

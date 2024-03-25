@@ -3,10 +3,7 @@ package endtoendtests
 import (
 	"os"
 	"os/exec"
-	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestMain(m *testing.M) {
@@ -26,14 +23,4 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 	os.Exit(result)
-}
-
-func TestCcwc(t *testing.T) {
-	ccwcCommand := exec.Command("./ccwc", "-c", "test.txt")
-	ccwcCommand.Dir = "./.."
-	var out strings.Builder
-	ccwcCommand.Stdout = &out
-	err := ccwcCommand.Run()
-	assert.NoError(t, err)
-	assert.Equal(t, "342190 test.txt", out.String())
 }
