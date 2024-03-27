@@ -94,4 +94,12 @@ func TestApp(t *testing.T) {
 		return []byte("BCDEF BCD BCDE"), nil
 	}, []string{"ccwc", "-w", "test.txt"})
 	assert.Equal(t, "3 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF BCD BCDE"), nil
+	}, []string{"ccwc", "-m", "test.txt"})
+	assert.Equal(t, "14 test.txt\n", result)
 }
