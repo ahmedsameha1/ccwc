@@ -38,4 +38,60 @@ func TestApp(t *testing.T) {
 		return []byte{4, 127, 128, 129, 255, 10, 66, 67, 68}, nil
 	}, []string{"ccwc", "-l", "test.txt"})
 	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF\nBCD"), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF BCD"), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF\rBCD"), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF BCD "), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte(" BCDEF BCD "), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte(" BCDEF BCD"), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "2 test.txt\n", result)
+
+	result = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF BCD BCDE"), nil
+	}, []string{"ccwc", "-w", "test.txt"})
+	assert.Equal(t, "3 test.txt\n", result)
 }
