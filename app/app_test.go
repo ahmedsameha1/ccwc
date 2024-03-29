@@ -2,6 +2,7 @@ package app
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +25,7 @@ func TestApp(t *testing.T) {
 		return []byte{4, 127, 128, 129, 255}, nil
 	}, []string{"ccwc", "-l", "test.txt"})
 	assert.NoError(t, err)
-	assert.Equal(t, "1 test.txt", result)
+	assert.Equal(t, "0 test.txt", result)
 
 	result, err = App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
@@ -42,7 +43,7 @@ func TestApp(t *testing.T) {
 		return []byte{4, 127, 128, 129, 255, 10, 66, 67, 68}, nil
 	}, []string{"ccwc", "-l", "test.txt"})
 	assert.NoError(t, err)
-	assert.Equal(t, "2 test.txt", result)
+	assert.Equal(t, "1 test.txt", result)
 
 	result, err = App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
@@ -115,6 +116,30 @@ func TestApp(t *testing.T) {
 	}, []string{"ccwc", "-m", "test.txt"})
 	assert.NoError(t, err)
 	assert.Equal(t, "14 test.txt", result)
+
+	result, err = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return []byte("BCDEF BCD BCDE"), nil
+	}, []string{"ccwc", "test.txt"})
+	assert.NoError(t, err)
+	assert.Equal(t, "     0      3     14 test.txt", result)
+
+	result, err = App(func(name string) ([]byte, error) {
+		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
+			panic("error")
+		}
+		if name == "test.txt" {
+			return []byte("BCDEF BCD BCDE"), nil
+		} else if name == "test2.txt" {
+			return []byte("BCDEF BCD BCDE\nBCD"), nil
+		} else {
+			return []byte("BCDEF BCD BCDE\n" + strings.Repeat("n", 1000)), nil
+		}
+	}, []string{"ccwc", "test.txt", "test2.txt", "test3.txt"})
+	assert.NoError(t, err)
+	assert.Equal(t, "     0      3     14 test.txt\n     1      4     18 test2.txt\n     1      4   1015 test3.txt", result)
 }
 
 func TestAppValidation(t *testing.T) {

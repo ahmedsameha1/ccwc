@@ -12,22 +12,36 @@ func App(readFile func(name string) ([]byte, error), args []string) (string, err
 	if err != nil {
 		return "", err
 	}
-	contentInBytes, _ := readFile(args[2])
-	contentString := string(contentInBytes)
-	if args[1] == "-l" {
-		count := strings.Count(contentString, "\n")
-		if !strings.HasSuffix(contentString, "\n") {
-			return fmt.Sprintf("%d %s", count+1, args[2]), nil
+	if strings.HasPrefix(args[1], "-") {
+		contentInBytes, _ := readFile(args[2])
+		contentString := string(contentInBytes)
+		if args[1] == "-l" {
+			return fmt.Sprintf("%d %s", linesOption(contentString), args[2]), nil
+		} else if args[1] == "-w" {
+			return fmt.Sprintf("%d %s", wordsOption(contentString), args[2]), nil
+		} else if args[1] == "-m" {
+			return fmt.Sprintf("%d %s", utf8.RuneCountInString(contentString), args[2]), nil
 		} else {
-			return fmt.Sprintf("%d %s", count, args[2]), nil
+			return fmt.Sprintf("%d %s", len(contentInBytes), args[2]), nil
 		}
-	} else if args[1] == "-w" {
-		words := strings.Fields(contentString)
-		return fmt.Sprintf("%d %s", len(words), args[2]), nil
-	} else if args[1] == "-m" {
-		return fmt.Sprintf("%d %s", utf8.RuneCountInString(contentString), args[2]), nil
+	} else {
+		var result string
+		fileNames := args[1:]
+		for i := 0; i < len(fileNames); i++ {
+			if i == len(fileNames)-1 {
+				contentInBytes, _ := readFile(fileNames[i])
+				contentString := string(contentInBytes)
+				result = result + fmt.Sprintf("%6d %6d %6d %s", linesOption(contentString), wordsOption(contentString),
+					len(contentInBytes), fileNames[i])
+			} else {
+				contentInBytes, _ := readFile(fileNames[i])
+				contentString := string(contentInBytes)
+				result = result + fmt.Sprintf("%6d %6d %6d %s\n", linesOption(contentString), wordsOption(contentString),
+					len(contentInBytes), fileNames[i])
+			}
+		}
+		return result, nil
 	}
-	return fmt.Sprintf("%d %s", len(contentInBytes), args[2]), nil
 }
 
 func validate(readFile func(name string) ([]byte, error), args []string) error {
@@ -75,4 +89,20 @@ func checkFilesExistance(readFile func(name string) ([]byte, error), args []stri
 		return errors.New(errorMessage)
 	}
 	return nil
+}
+
+func linesOption(contentString string) int {
+	count := strings.Count(contentString, "\n")
+	return count
+	/*
+		if !strings.HasSuffix(contentString, "\n") {
+			return count + 1
+		} else {
+			return count
+		}
+	*/
+}
+
+func wordsOption(contentString string) int {
+	return len(strings.Fields(contentString))
 }

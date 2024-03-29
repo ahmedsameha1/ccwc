@@ -1,0 +1,3 @@
+In this step your goal is to support the command line option -l that outputs the number of lines in a file.
+
+If you’ve done it right your output should match this:
