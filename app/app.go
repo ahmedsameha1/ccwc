@@ -102,6 +102,9 @@ func validate(readFile func(name string) ([]byte, error), args []string) error {
 	lengthOfArgs := len(args)
 	if lengthOfArgs > 2 {
 		if strings.HasPrefix(args[1], "-") {
+			if args[1] != "-l" && args[1] != "-w" && args[1] != "-c" && args[1] != "-m" {
+				return errors.New("there is an error with your options/arguments")
+			}
 			return checkFilesExistance(readFile, args[2:])
 		} else {
 			return checkFilesExistance(readFile, args[1:])

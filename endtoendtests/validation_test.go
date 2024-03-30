@@ -33,6 +33,22 @@ func TestValidation(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, "there is no such file: b.txt\n", errOut.String())
 
+	ccwcCommand = exec.Command("./ccwc", "-d", "test.txt")
+	ccwcCommand.Dir = "./.."
+	errOut.Reset()
+	ccwcCommand.Stderr = &errOut
+	err = ccwcCommand.Run()
+	assert.Error(t, err)
+	assert.Equal(t, "there is an error with your options/arguments\n", errOut.String())
+
+	ccwcCommand = exec.Command("./ccwc", "-d", "test.txt", "test2.txt")
+	ccwcCommand.Dir = "./.."
+	errOut.Reset()
+	ccwcCommand.Stderr = &errOut
+	err = ccwcCommand.Run()
+	assert.Error(t, err)
+	assert.Equal(t, "there is an error with your options/arguments\n", errOut.String())
+
 	ccwcCommand = exec.Command("./ccwc")
 	ccwcCommand.Dir = "./.."
 	errOut.Reset()

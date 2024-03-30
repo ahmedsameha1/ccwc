@@ -231,6 +231,15 @@ func TestAppValidation(t *testing.T) {
 	assert.Equal(t, "there is no such file: b.txt", err.Error())
 
 	result, err = App(func(name string) ([]byte, error) {
+		if name != "test.txt" {
+			panic("error")
+		}
+		return nil, errors.New("There is no such file")
+	}, []string{"ccwc", "-d", "test.txt"})
+	assert.Empty(t, result)
+	assert.Equal(t, "there is an error with your options/arguments", err.Error())
+
+	result, err = App(func(name string) ([]byte, error) {
 		return nil, nil
 	}, []string{"ccwc"})
 	assert.Empty(t, result)
