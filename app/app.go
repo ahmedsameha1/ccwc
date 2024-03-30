@@ -12,17 +12,71 @@ func App(readFile func(name string) ([]byte, error), args []string) (string, err
 	if err != nil {
 		return "", err
 	}
+	lengthOfArgs := len(args)
+	args1 := args[1]
 	if strings.HasPrefix(args[1], "-") {
-		contentInBytes, _ := readFile(args[2])
-		contentString := string(contentInBytes)
-		if args[1] == "-l" {
-			return fmt.Sprintf("%d %s", linesOption(contentString), args[2]), nil
-		} else if args[1] == "-w" {
-			return fmt.Sprintf("%d %s", wordsOption(contentString), args[2]), nil
-		} else if args[1] == "-m" {
-			return fmt.Sprintf("%d %s", utf8.RuneCountInString(contentString), args[2]), nil
-		} else {
-			return fmt.Sprintf("%d %s", len(contentInBytes), args[2]), nil
+		if lengthOfArgs == 3 {
+			contentInBytes, _ := readFile(args[2])
+			contentString := string(contentInBytes)
+			if args1 == "-l" {
+				return fmt.Sprintf("%d %s", linesOption(contentString), args[2]), nil
+			} else if args1 == "-w" {
+				return fmt.Sprintf("%d %s", wordsOption(contentString), args[2]), nil
+			} else if args1 == "-m" {
+				return fmt.Sprintf("%d %s", utf8.RuneCountInString(contentString), args[2]), nil
+			} else {
+				return fmt.Sprintf("%d %s", len(contentInBytes), args[2]), nil
+			}
+		} else if lengthOfArgs > 3 {
+			var result string
+			fileNames := args[2:]
+			if args1 == "-l" {
+				for i := 0; i < len(fileNames); i++ {
+					contentInBytes, _ := readFile(fileNames[i])
+					contentString := string(contentInBytes)
+					if i == len(fileNames)-1 {
+						result = result + fmt.Sprintf("%6d %s", linesOption(contentString), fileNames[i])
+					} else {
+						result = result + fmt.Sprintf("%6d %s\n", linesOption(contentString), fileNames[i])
+					}
+				}
+				return result, nil
+			} else if args1 == "-w" {
+				for i := 0; i < len(fileNames); i++ {
+					contentInBytes, _ := readFile(fileNames[i])
+					contentString := string(contentInBytes)
+					if i == len(fileNames)-1 {
+						result = result + fmt.Sprintf("%6d %s", wordsOption(contentString), fileNames[i])
+					} else {
+						result = result + fmt.Sprintf("%6d %s\n", wordsOption(contentString), fileNames[i])
+					}
+				}
+				return result, nil
+			} else if args1 == "-m" {
+				for i := 0; i < len(fileNames); i++ {
+					contentInBytes, _ := readFile(fileNames[i])
+					contentString := string(contentInBytes)
+					if i == len(fileNames)-1 {
+						result = result + fmt.Sprintf("%6d %s", utf8.RuneCountInString(contentString), fileNames[i])
+					} else {
+						result = result + fmt.Sprintf("%6d %s\n", utf8.RuneCountInString(contentString), fileNames[i])
+					}
+				}
+				return result, nil
+			} else {
+				for i := 0; i < len(fileNames); i++ {
+					contentInBytes, _ := readFile(fileNames[i])
+					if i == len(fileNames)-1 {
+						result = result + fmt.Sprintf("%6d %s", len(contentInBytes), fileNames[i])
+					} else {
+						result = result + fmt.Sprintf("%6d %s\n", len(contentInBytes), fileNames[i])
+					}
+				}
+				return result, nil
+			}
+		} else { // Handled with validate()
+			// Should be unreacable
+			return "", err
 		}
 	} else {
 		var result string
