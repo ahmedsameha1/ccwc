@@ -1,15 +1,16 @@
-package app
+package app_test
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
+	"github.com/ahmedsameha1/ccwc/app"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestApp(t *testing.T) {
-	result, err := App(func(name string) ([]byte, error) {
+	result, err := app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -18,7 +19,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "5 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -27,7 +28,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "0 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -36,7 +37,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -45,7 +46,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "1 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -54,7 +55,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -63,7 +64,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -72,7 +73,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -81,7 +82,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -90,7 +91,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -99,7 +100,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "2 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -108,7 +109,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "3 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -117,7 +118,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "14 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -126,7 +127,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "     0      3     14 test.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
 			panic("error")
 		}
@@ -141,7 +142,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "     0      3     14 test.txt\n     1      4     18 test2.txt\n     1      4   1015 test3.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
 			panic("error")
 		}
@@ -156,7 +157,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "    14 test.txt\n    18 test2.txt\n  1015 test3.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
 			panic("error")
 		}
@@ -171,7 +172,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "     0 test.txt\n     1 test2.txt\n     2 test3.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
 			panic("error")
 		}
@@ -186,7 +187,7 @@ func TestApp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "     3 test.txt\n     4 test2.txt\n     4 test3.txt", result)
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" && name != "test2.txt" && name != "test3.txt" {
 			panic("error")
 		}
@@ -203,7 +204,7 @@ func TestApp(t *testing.T) {
 }
 
 func TestAppValidation(t *testing.T) {
-	result, err := App(func(name string) ([]byte, error) {
+	result, err := app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -212,7 +213,7 @@ func TestAppValidation(t *testing.T) {
 	assert.Empty(t, result)
 	assert.Equal(t, "there is an error with your options/arguments", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "b.txt" {
 			panic("error")
 		}
@@ -221,7 +222,7 @@ func TestAppValidation(t *testing.T) {
 	assert.Empty(t, result)
 	assert.Equal(t, "there is no such file", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "b.txt" {
 			panic("error")
 		}
@@ -230,7 +231,7 @@ func TestAppValidation(t *testing.T) {
 	assert.Empty(t, result)
 	assert.Equal(t, "there is no such file: b.txt", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "test.txt" {
 			panic("error")
 		}
@@ -239,13 +240,13 @@ func TestAppValidation(t *testing.T) {
 	assert.Empty(t, result)
 	assert.Equal(t, "there is an error with your options/arguments", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		return nil, nil
 	}, []string{"ccwc"})
 	assert.Empty(t, result)
 	assert.Equal(t, "where is the file name?", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "b.txt" && name != "-w" {
 			panic("error")
 		}
@@ -254,7 +255,7 @@ func TestAppValidation(t *testing.T) {
 	assert.Empty(t, result)
 	assert.Equal(t, "there is no such file: b.txt\nthere is no such file: -w", err.Error())
 
-	result, err = App(func(name string) ([]byte, error) {
+	result, err = app.App(func(name string) ([]byte, error) {
 		if name != "b.txt" && name != "c.txt" {
 			panic("error")
 		}

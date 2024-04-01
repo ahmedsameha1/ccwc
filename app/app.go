@@ -148,13 +148,6 @@ func checkFilesExistance(readFile func(name string) ([]byte, error), args []stri
 func linesOption(contentString string) int {
 	count := strings.Count(contentString, "\n")
 	return count
-	/*
-		if !strings.HasSuffix(contentString, "\n") {
-			return count + 1
-		} else {
-			return count
-		}
-	*/
 }
 
 func wordsOption(contentString string) int {
