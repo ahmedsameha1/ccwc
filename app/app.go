@@ -15,7 +15,7 @@ func App(readFile func(name string) ([]byte, error), args []string) (string, err
 	lengthOfArgs := len(args)
 	args1 := args[1]
 	if strings.HasPrefix(args[1], "-") {
-		if lengthOfArgs == 3 {
+		if lengthOfArgs <= 3 { // less than 3 is handled be validate(), so it should never be less than 3
 			contentInBytes, _ := readFile(args[2])
 			contentString := string(contentInBytes)
 			if args1 == "-l" {
@@ -27,7 +27,7 @@ func App(readFile func(name string) ([]byte, error), args []string) (string, err
 			} else {
 				return fmt.Sprintf("%d %s", len(contentInBytes), args[2]), nil
 			}
-		} else if lengthOfArgs > 3 {
+		} else {
 			var result string
 			fileNames := args[2:]
 			if args1 == "-l" {
@@ -74,9 +74,6 @@ func App(readFile func(name string) ([]byte, error), args []string) (string, err
 				}
 				return result, nil
 			}
-		} else { // Handled with validate()
-			// Should be unreacable
-			return "", err
 		}
 	} else {
 		var result string
